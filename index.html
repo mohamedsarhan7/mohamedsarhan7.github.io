@@ -1,219 +1,1536 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" class="dark scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dev Mo</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>/bin/sarhan — Mohamed Sarhan | Senior Backend, DevOps &amp; Platform Engineer</title>
+  <meta name="description" content="Mohamed Sarhan — Senior Backend, DevOps &amp; Platform Engineer and Systems Architect specializing in multi-tenant SaaS, Kubernetes (GKE/OKE), cloud infrastructure, and medical imaging systems." />
+
+  <!-- Inline SVG Favicon -->
+  <link
+    rel="icon"
+    type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230A0D12'/%3E%3Crect x='2' y='2' width='60' height='60' rx='12' fill='none' stroke='%2358A6FF' stroke-opacity='0.35' stroke-width='2'/%3E%3Cpath d='M18 22l12 10-12 10' fill='none' stroke='%237EE787' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cline x1='34' y1='42' x2='48' y2='42' stroke='%2358A6FF' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E"
+  />
+
+  <!-- Open Graph & Social Preview Metadata -->
+  <meta property="og:title" content="/bin/sarhan — Mohamed Sarhan" />
+  <meta property="og:description" content="Senior Backend, DevOps &amp; Platform Engineer · Systems Architect. Multi-tenant SaaS, Kubernetes (GKE/OKE), GCP/OCI/AWS &amp; Medical Imaging." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://mohamedsarhan7.github.io/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:creator" content="@mohamedsarhan7x" />
+  <meta name="theme-color" content="#0A0D12" />
+
+  <!-- Google Fonts: JetBrains Mono (Terminal) & Inter (Website View) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+
+  <!-- CSS Color Variables (RGB channels so Tailwind opacity modifiers work seamlessly) -->
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Courier New', Courier, monospace;
+    :root {
+      --color-canvas: 10 13 18;
+      --color-surface: 17 21 30;
+      --color-surface-elevated: 22 27 38;
+      --color-ink: 230 237 243;
+      --color-muted: 139 148 158;
+      --color-accent: 88 166 255;
+      --color-sage: 126 231 135;
+      --color-violet: 210 168 255;
+      --color-amber-soft: 227 179 65;
     }
 
-    body {
-      background-color: #1a1b26;
-      color: #4af626;
-      min-height: 100vh;
-      padding: 2rem;
+    .ambient-glow {
+      background: radial-gradient(
+        ellipse 65% 42% at 50% 0%,
+        rgb(var(--color-accent) / 0.12),
+        rgb(var(--color-accent) / 0.03) 48%,
+        transparent 75%
+      );
+      transition: background 0.35s ease;
     }
 
-    .terminal {
-      max-width: 800px;
-      margin: 0 auto;
-      background-color: #1f2335;
-      border-radius: 10px;
-      padding: 1rem;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Hide scrollbar cleanly on horizontally-scrollable mobile chip bar */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
 
-    .terminal-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid #2f3447;
-      margin-bottom: 1rem;
+    /* Expandable Bottom-Right Frosted-Glass Accent Pill */
+    .accent-dock-tray {
+      max-width: 0;
+      opacity: 0;
+      padding-left: 0;
+      padding-right: 0;
+      margin-right: 0;
+      pointer-events: none;
+      transition:
+        max-width 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.22s ease,
+        padding 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+        margin 0.28s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .terminal-circle {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background-color: #ff5f56;
-    }
-
-    .terminal-circle:nth-child(2) {
-      background-color: #ffbd2e;
-    }
-
-    .terminal-circle:nth-child(3) {
-      background-color: #27c93f;
-    }
-
-    .terminal-title {
-      margin-left: 8px;
-      color: #787c99;
-      font-size: 14px;
-    }
-
-    #output {
-      min-height: 300px;
-      margin-bottom: 1rem;
-      white-space: pre-wrap;
-      line-height: 1.5;
-    }
-
-    .input-line {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    #input {
-      flex: 1;
-      background: none;
-      border: none;
-      color: #4af626;
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 16px;
-      outline: none;
-    }
-
-    .cursor {
-      display: inline-block;
-      width: 8px;
-      height: 16px;
-      background-color: #4af626;
-      animation: blink 1s infinite;
-    }
-
-    .directory {
-      color: #4a9eff;
-    }
-
-    .executable {
-      color: #4af626;
-    }
-
-    .file {
-      color: #ffffff;
-    }
-
-
-        .warning {
-            color: #ff0000;
-            font-weight: bold;
-        }
-    @keyframes blink {
-
-      0%,
-      50% {
+    @media (hover: hover) and (pointer: fine) {
+      .accent-dock:hover .accent-dock-tray {
+        max-width: 220px;
         opacity: 1;
-      }
-
-      51%,
-      100% {
-        opacity: 0;
+        padding-left: 6px;
+        padding-right: 4px;
+        margin-right: 6px;
+        pointer-events: auto;
       }
     }
 
-    @media (max-width: 600px) {
-      body {
-        padding: 1rem;
-      }
+    .accent-dock.is-open .accent-dock-tray {
+      max-width: 220px;
+      opacity: 1;
+      padding-left: 6px;
+      padding-right: 4px;
+      margin-right: 6px;
+      pointer-events: auto;
     }
   </style>
-</head>
 
-<body>
-  <div class="terminal">
-    <div class="terminal-header">
-      <div class="terminal-circle"></div>
-      <div class="terminal-circle"></div>
-      <div class="terminal-circle"></div>
-      <span class="terminal-title">/bin/sarhan</span>
-    </div>
-    <div id="output"></div>
-    <div class="input-line">
-      <span>$</span>
-      <input type="text" id="input" autofocus>
-    </div>
+  <!-- Apply persisted accent theme immediately to avoid initial flash -->
+  <script>
+    (function () {
+      var presets = {
+        blue: '88 166 255',
+        emerald: '52 211 153',
+        violet: '192 132 252',
+        amber: '245 158 11',
+        rose: '251 113 133',
+      };
+      try {
+        var saved = localStorage.getItem('sarhan_accent_theme');
+        if (saved && presets[saved]) {
+          document.documentElement.style.setProperty('--color-accent', presets[saved]);
+        }
+      } catch (_) {}
+    })();
+  </script>
+
+  <!-- Tailwind CSS CDN & Custom Design Tokens -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            canvas: 'rgb(var(--color-canvas) / <alpha-value>)',
+            surface: 'rgb(var(--color-surface) / <alpha-value>)',
+            surfaceElevated: 'rgb(var(--color-surface-elevated) / <alpha-value>)',
+            ink: 'rgb(var(--color-ink) / <alpha-value>)',
+            muted: 'rgb(var(--color-muted) / <alpha-value>)',
+            accent: 'rgb(var(--color-accent) / <alpha-value>)',
+            sage: 'rgb(var(--color-sage) / <alpha-value>)',
+            violet: 'rgb(var(--color-violet) / <alpha-value>)',
+            amberSoft: 'rgb(var(--color-amber-soft) / <alpha-value>)',
+          },
+          fontFamily: {
+            mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+            sans: ['"Inter"', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+          boxShadow: {
+            terminal: '0 24px 80px -16px rgba(0, 0, 0, 0.78), 0 0 0 1px rgba(255, 255, 255, 0.04)',
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="min-h-[100dvh] bg-canvas text-ink font-mono text-[14px] leading-[1.7] antialiased selection:bg-accent/25 selection:text-ink overflow-x-hidden relative">
+
+  <!-- Subtle Top-Center Ambient Accent Radial Glow -->
+  <div aria-hidden="true" class="ambient-glow pointer-events-none fixed inset-0"></div>
+
+  <!-- =========================================================
+       VIEW 1: TERMINAL MODE (Full-Viewport 100dvh Edge-to-Edge)
+       ========================================================= -->
+  <div
+    id="view-terminal-shell"
+    class="hidden relative z-10 w-full h-[100dvh] flex flex-col bg-canvas/70"
+  >
+    <main
+      id="terminal-window"
+      class="w-full h-full flex flex-col overflow-hidden"
+      aria-label="Interactive terminal portfolio"
+    >
+      <!-- Full-Width Terminal Header Bar -->
+      <header class="w-full bg-surface/85 border-b border-white/[0.07] select-none shrink-0 backdrop-blur-md relative z-20">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-3">
+          <!-- Left: Brand / Session Title -->
+          <div class="text-xs sm:text-sm text-muted font-mono tracking-tight truncate flex items-center gap-2">
+            <span class="inline-block w-2 h-2 rounded-full bg-accent shrink-0 transition-colors duration-300"></span>
+            <span class="text-ink font-medium">/bin/sarhan</span>
+            <span class="hidden sm:inline text-muted/60">— zsh · sarhan@cloud:~</span>
+          </div>
+
+          <!-- Right: Website / Terminal Toggle -->
+          <div
+            role="tablist"
+            aria-label="View mode"
+            class="inline-flex items-center p-0.5 rounded-lg bg-surfaceElevated border border-white/[0.08] text-[11px] sm:text-xs font-sans font-medium shrink-0"
+          >
+            <button
+              type="button"
+              role="tab"
+              data-set-mode="website"
+              aria-selected="false"
+              class="mode-btn-website px-2.5 sm:px-3 py-1 rounded-md transition-all duration-200 text-muted hover:text-ink cursor-pointer"
+            >
+              Website
+            </button>
+            <button
+              type="button"
+              role="tab"
+              data-set-mode="terminal"
+              aria-selected="true"
+              class="mode-btn-terminal px-2.5 sm:px-3 py-1 rounded-md transition-all duration-200 bg-white/[0.1] text-ink shadow-sm cursor-pointer"
+            >
+              Terminal
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Full-Viewport Scrollable Terminal Area -->
+      <div
+        id="terminal-scroll"
+        class="flex-1 min-h-0 overflow-y-auto scroll-smooth [scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.12)_transparent]"
+      >
+        <div class="max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-6 space-y-5">
+          <!-- Dynamic CLI history & initial whoami boot block injected here -->
+          <div id="terminal-output" class="space-y-7"></div>
+
+          <!-- Live Interactive Command Prompt (Never wraps awkwardly on mobile; 16px prevents iOS zoom) -->
+          <div id="prompt-row" class="flex items-center flex-nowrap gap-2 pt-1 pb-2">
+            <label for="terminal-input" class="shrink-0 select-none flex items-center text-[14px]">
+              <span class="hidden sm:inline text-sage font-medium">sarhan@cloud</span><span class="hidden sm:inline text-muted">:</span><span class="text-accent font-medium">~</span><span class="text-muted ml-0.5">$</span>
+            </label>
+
+            <!-- Input + Inline Ghost Autocomplete Container -->
+            <div class="relative flex-1 min-w-0 flex items-center">
+              <!-- Ghost autocomplete suggestion layer -->
+              <div
+                id="ghost-text"
+                aria-hidden="true"
+                class="pointer-events-none absolute inset-0 flex items-center whitespace-pre font-mono text-[16px] sm:text-[14px] leading-[1.6] text-muted/40 overflow-hidden"
+              ></div>
+
+              <!-- Real input field -->
+              <input
+                id="terminal-input"
+                type="text"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+                enterkeyhint="go"
+                aria-label="Terminal command input"
+                placeholder="type a command or tap below..."
+                class="relative z-10 w-full min-w-0 bg-transparent text-ink placeholder:text-muted/35 focus:outline-none font-mono text-[16px] sm:text-[14px] leading-[1.6] caret-accent"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Full-Width Pinned Bottom Command Bar -->
+      <div class="shrink-0 w-full bg-surface/85 border-t border-white/[0.07] backdrop-blur-md">
+        <div class="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5 sm:py-3 flex items-center justify-between gap-3">
+          <div
+            class="flex items-center flex-nowrap sm:flex-wrap gap-1.5 overflow-x-auto no-scrollbar w-full lg:w-auto"
+            role="toolbar"
+            aria-label="Quick commands"
+          >
+            <span class="text-[11px] uppercase tracking-wider text-muted/70 mr-1 hidden sm:inline shrink-0">Quick run:</span>
+            <button type="button" data-cmd="about" class="shrink-0 px-3 sm:px-2.5 py-1.5 sm:py-1 rounded-md text-xs bg-white/[0.04] hover:bg-accent/15 text-violet hover:text-accent border border-white/[0.07] hover:border-accent/30 transition-all duration-150 cursor-pointer">about</button>
+            <button type="button" data-cmd="projects" class="shrink-0 px-3 sm:px-2.5 py-1.5 sm:py-1 rounded-md text-xs bg-white/[0.04] hover:bg-accent/15 text-violet hover:text-accent border border-white/[0.07] hover:border-accent/30 transition-all duration-150 cursor-pointer">projects</button>
+            <button type="button" data-cmd="stack" class="shrink-0 px-3 sm:px-2.5 py-1.5 sm:py-1 rounded-md text-xs bg-white/[0.04] hover:bg-accent/15 text-violet hover:text-accent border border-white/[0.07] hover:border-accent/30 transition-all duration-150 cursor-pointer">stack</button>
+            <button type="button" data-cmd="contact" class="shrink-0 px-3 sm:px-2.5 py-1.5 sm:py-1 rounded-md text-xs bg-white/[0.04] hover:bg-accent/15 text-violet hover:text-accent border border-white/[0.07] hover:border-accent/30 transition-all duration-150 cursor-pointer">contact</button>
+            <button type="button" data-cmd="help" class="shrink-0 px-3 sm:px-2.5 py-1.5 sm:py-1 rounded-md text-xs bg-white/[0.04] hover:bg-accent/15 text-muted hover:text-ink border border-white/[0.07] hover:border-white/20 transition-all duration-150 cursor-pointer">help</button>
+            <button type="button" data-cmd="clear" class="shrink-0 px-3 sm:px-2.5 py-1.5 sm:py-1 rounded-md text-xs bg-white/[0.04] hover:bg-white/[0.08] text-muted hover:text-ink border border-white/[0.07] transition-all duration-150 cursor-pointer">clear</button>
+          </div>
+          <div class="hidden lg:flex items-center gap-3 text-[11px] text-muted/65 shrink-0">
+            <span><kbd class="px-1.5 py-0.5 rounded bg-white/[0.06] border border-white/[0.08] text-ink/75">Tab</kbd> complete</span>
+            <span><kbd class="px-1.5 py-0.5 rounded bg-white/[0.06] border border-white/[0.08] text-ink/75">↑↓</kbd> history</span>
+            <span><kbd class="px-1.5 py-0.5 rounded bg-white/[0.06] border border-white/[0.08] text-ink/75">Ctrl+L</kbd> clear</span>
+          </div>
+        </div>
+      </div>
+    </main>
   </div>
 
+  <!-- =========================================================
+       VIEW 2: WEBSITE MODE (Default Full-Page Responsive Website)
+       ========================================================= -->
+  <div
+    id="view-website"
+    class="relative z-10 min-h-[100dvh] w-full font-sans flex flex-col"
+    aria-label="Full-page portfolio website view"
+  ></div>
+
+  <!-- Floating Expandable Frosted-Glass Accent Color Pill (Bottom-Right) -->
+  <div
+    id="accent-dock"
+    class="accent-dock fixed right-4 sm:right-6 bottom-5 sm:bottom-6 z-40 inline-flex items-center p-1.5 rounded-full bg-surfaceElevated/80 backdrop-blur-xl border border-white/[0.1] shadow-[0_10px_34px_rgba(0,0,0,0.55)] transition-all duration-300"
+    role="region"
+    aria-label="Accent color selector"
+  >
+    <div
+      id="accent-dock-tray"
+      class="accent-dock-tray flex items-center gap-2.5 overflow-hidden"
+      role="radiogroup"
+      aria-label="Accent color presets"
+    ></div>
+    <button
+      id="accent-dock-trigger"
+      type="button"
+      data-dock-toggle="true"
+      aria-expanded="false"
+      aria-label="Change accent color"
+      title="Change accent color"
+      class="w-7 h-7 rounded-full flex items-center justify-center bg-white/[0.04] hover:bg-white/[0.09] border border-white/[0.08] transition-all duration-200 cursor-pointer shrink-0"
+    >
+      <span class="w-3.5 h-3.5 rounded-full bg-accent shadow-[0_0_12px_rgb(var(--color-accent)/0.7)] transition-colors duration-300"></span>
+    </button>
+  </div>
+
+  <!-- Subtle Toast Notification for Clipboard Copy -->
+  <div
+    id="toast"
+    role="status"
+    aria-live="polite"
+    class="pointer-events-none fixed bottom-6 left-1/2 -translate-x-1/2 translate-y-3 opacity-0 z-50 px-4 py-2 rounded-lg bg-surfaceElevated border border-accent/35 text-ink font-mono text-xs shadow-lg flex items-center gap-2 transition-all duration-200 max-w-[90vw] truncate"
+  >
+    <span class="w-2 h-2 rounded-full bg-accent shrink-0 transition-colors duration-300"></span>
+    <span id="toast-message" class="truncate">Copied to clipboard</span>
+  </div>
+
+  <!-- Semantic No-JS Fallback for Crawlers & Non-JS Clients -->
+  <noscript>
+    <div class="max-w-4xl mx-auto p-6 sm:p-10 text-ink font-sans space-y-4">
+      <h1 class="text-2xl font-semibold">Mohamed Sarhan — Senior Backend, DevOps &amp; Platform Engineer</h1>
+      <p class="text-muted">Systems Architect based in Egypt specializing in Multi-tenant SaaS, Kubernetes (GKE/OKE), Cloud Infrastructure (GCP/OCI/AWS), and Medical Imaging Systems.</p>
+      <p class="text-sm flex flex-wrap gap-3">
+        <a href="mailto:mohsarhan88@gmail.com" class="text-sage underline">mohsarhan88@gmail.com</a>
+        <a href="https://github.com/mohamedsarhan7" class="text-accent underline">github.com/mohamedsarhan7</a>
+        <a href="https://www.linkedin.com/in/mohamedsarhan7" class="text-accent underline">linkedin.com/in/mohamedsarhan7</a>
+        <a href="https://x.com/mohamedsarhan7x" class="text-accent underline">x.com/mohamedsarhan7x</a>
+      </p>
+    </div>
+  </noscript>
+
   <script>
-    const terminal = {
-      output: document.getElementById('output'),
-      input: document.getElementById('input'),
-      commands: {
-        help: `Available commands:
-    about    - Learn about me
-    skills   - See my technical skills
-    clear    - Clear the terminal
-    contact  - Get my contact info`,
-        about: `Hi! I'm Mohamed Sarhan
-Backend Engineer | DevOps Enthusiast
+    /**
+     * /bin/sarhan — Interactive Terminal & Full-Page Reader Portfolio Controller
+     * Single data source driving both CLI and full-page Reader website views,
+     * with responsive mobile ergonomics and desktop fullscreen terminal toggle.
+     */
+    (function () {
+      'use strict';
 
-I'm passionate about building scalable systems and automating everything.
-Currently exploring the DevOps world.`,
-        skills: `=== Technical Skills ===
+      // --- Single Source of Truth: Profile, Principles, Projects & Stack ---
+      const PROFILE = {
+        name: 'Mohamed Sarhan',
+        badge: 'Systems Architect',
+        role: 'Senior Backend, DevOps & Platform Engineer · Systems Architect',
+        availability: 'available · open to new roles',
+        locationLine: 'Egypt · Open to new roles',
+        summary:
+          'I build multi-tenant SaaS backends, Kubernetes platforms (GKE/OKE), and cloud infrastructure across GCP, OCI, and AWS — with deep experience in medical imaging (DICOM/PACS) and strict tenant isolation.',
+        aboutIntro:
+          'I build backend platforms and cloud infrastructure designed to stay calm under pressure — spanning distributed backends, Kubernetes platform operations, and regulated healthcare/SaaS systems.',
+        email: 'mohsarhan88@gmail.com',
+        githubUrl: 'https://github.com/mohamedsarhan7',
+        githubHandle: 'github.com/mohamedsarhan7',
+        linkedinUrl: 'https://www.linkedin.com/in/mohamedsarhan7',
+        linkedinHandle: 'linkedin.com/in/mohamedsarhan7',
+        xUrl: 'https://x.com/mohamedsarhan7x',
+        xHandle: 'x.com/mohamedsarhan7x',
+      };
 
-• Backend: Node.js, Python, Nginx, Django, PostgreSQL, MongoDB
-• DevOps: Docker, GitHub Actions
-• Cloud: AWS (still learning)
-• Tools: Git, Linux, Bash`,
-        contact: `=== Contact Info ===
+      const PRINCIPLES = [
+        {
+          num: '01',
+          title: 'Data Isolation & Tenant Boundaries',
+          description: 'Defense-in-depth multi-tenancy using PostgreSQL RLS, isolated identities, and strict storage policies.',
+          colorClass: 'text-accent',
+        },
+        {
+          num: '02',
+          title: 'Idempotency & Reliability',
+          description: 'Event-driven pipelines and backend services built to retry safely without duplicating clinical or business state.',
+          colorClass: 'text-sage',
+        },
+        {
+          num: '03',
+          title: 'Declarative Automation',
+          description: 'GitOps-first delivery with Terraform, Helm, and ArgoCD so environments are reproducible and auditable.',
+          colorClass: 'text-violet',
+        },
+        {
+          num: '04',
+          title: 'Cost-Conscious Cloud Architecture',
+          description: 'Right-sizing Kubernetes workloads, eliminating unnecessary third-party vendor overhead, and aligning cloud infrastructure with real traffic and compliance requirements.',
+          colorClass: 'text-amberSoft',
+        },
+      ];
 
-• X: x.com/Imohamedsarhan7
-• Email: mohsarhan88@gmail.com
-• GitHub: github.com/mohamedsarhan7
-• LinkedIn: linkedin.com/in/mohamedsarhan7`,
+      const PROJECTS = [
+        {
+          name: 'Theros',
+          url: 'https://therosplatform.com',
+          urlLabel: 'therosplatform.com',
+          category: 'Healthcare SaaS',
+          badgeClasses: 'bg-sage/10 text-sage border border-sage/20',
+          dotClass: 'bg-sage',
+          shortSummary: 'Multi-tenant teleradiology & medical imaging platform',
+          description:
+            'Multi-tenant teleradiology & medical imaging platform engineered with strict PostgreSQL Row-Level Security, federated identity, and event-driven DICOM processing pipelines.',
+          detailLabel: 'stack',
+          detailLabelClass: 'text-violet',
+          detailText: 'NestJS · GKE · PostgreSQL RLS · Keycloak · Orthanc PACS · GCP Pub/Sub',
+          tags: [
+            { label: 'NestJS', colorClass: 'text-violet' },
+            { label: 'GKE', colorClass: 'text-accent' },
+            { label: 'PostgreSQL RLS', colorClass: 'text-ink/80' },
+            { label: 'Keycloak', colorClass: 'text-ink/80' },
+            { label: 'Orthanc PACS', colorClass: 'text-ink/80' },
+            { label: 'GCP Pub/Sub', colorClass: 'text-ink/80' },
+          ],
+        },
+        {
+          name: 'DeyarTech',
+          url: 'https://deyartech.com',
+          urlLabel: 'deyartech.com',
+          category: 'PropTech',
+          badgeClasses: 'bg-accent/10 text-accent border border-accent/20',
+          dotClass: 'bg-accent',
+          shortSummary: 'Multi-tenant real estate management platform',
+          description:
+            'Multi-tenant real estate management platform featuring isolated tenant schemas, containerized deployments, object storage pipelines, and self-hosted AI workflows.',
+          detailLabel: 'stack',
+          detailLabelClass: 'text-violet',
+          detailText: 'NestJS · TypeORM · PostgreSQL · Docker · AWS S3/ECR · Ollama AI',
+          tags: [
+            { label: 'NestJS', colorClass: 'text-violet' },
+            { label: 'TypeORM', colorClass: 'text-ink/80' },
+            { label: 'PostgreSQL', colorClass: 'text-ink/80' },
+            { label: 'Docker', colorClass: 'text-accent' },
+            { label: 'AWS S3/ECR', colorClass: 'text-ink/80' },
+            { label: 'Ollama AI', colorClass: 'text-sage' },
+          ],
+        },
+        {
+          name: 'KSA Cloud Migration & In-House PACS',
+          readerName: 'KSA Cloud Migration (AWS → OCI)',
+          url: null,
+          urlLabel: null,
+          category: 'Platform / FinOps',
+          badgeClasses: 'bg-violet/10 text-violet border border-violet/20',
+          dotClass: 'bg-violet',
+          shortSummary: 'AWS Ireland K8s → OCI KSA (OKE) for data residency & cost reduction',
+          description:
+            'Migrated Kubernetes workloads from AWS Ireland to OCI KSA (OKE) for Saudi data residency, replacing a third-party vendor with an in-house cloud PACS and DICOM viewers (MedDream & OHIF) while right-sizing resources to cut spend.',
+          detailLabel: 'impact',
+          detailLabelClass: 'text-sage',
+          detailText: 'KSA data residency, dropped third-party vendor, in-house PACS + MedDream/OHIF & right-sized OCI spend',
+          tags: [
+            { label: 'AWS → OCI (KSA)', colorClass: 'text-accent' },
+            { label: 'OKE / Kubernetes', colorClass: 'text-ink/80' },
+            { label: 'Cloud PACS', colorClass: 'text-violet' },
+            { label: 'MedDream & OHIF', colorClass: 'text-ink/80' },
+            { label: 'Terraform', colorClass: 'text-violet' },
+            { label: 'FinOps', colorClass: 'text-sage' },
+          ],
+        },
+        {
+          name: 'EduMarket',
+          url: 'https://edumarket.io',
+          urlLabel: 'edumarket.io',
+          category: 'EdTech · Raise Right',
+          badgeClasses: 'bg-amberSoft/10 text-amberSoft border border-amberSoft/20',
+          dotClass: 'bg-amberSoft',
+          shortSummary: 'Educational marketplace & B2B SaaS platform (built at Raise Right)',
+          description:
+            'Educational marketplace and B2B SaaS platform built while working at Raise Right, connecting schools, nurseries, and parents with institution discovery, enrollment workflows, and management tools.',
+          detailLabel: 'scope',
+          detailLabelClass: 'text-violet',
+          detailText: 'EdTech Marketplace · B2B SaaS · Backend APIs · Web & Mobile Ecosystem',
+          tags: [
+            { label: 'EdTech', colorClass: 'text-amberSoft' },
+            { label: 'B2B SaaS', colorClass: 'text-accent' },
+            { label: 'Marketplace', colorClass: 'text-sage' },
+            { label: 'Backend APIs', colorClass: 'text-violet' },
+            { label: 'Raise Right', colorClass: 'text-ink/80' },
+          ],
+        },
+      ];
 
-        sudo: `<span class="warning">User is not in the sudoers file. This incident will be reported.</span>`,
-      },
+      const STACK = [
+        {
+          category: 'Backend & APIs',
+          colorClass: 'text-accent',
+          items: ['Node.js', 'TypeScript', 'NestJS', 'PostgreSQL', 'Redis', 'Laravel'],
+        },
+        {
+          category: 'Cloud & Orchestration',
+          colorClass: 'text-sage',
+          items: ['GCP (GKE)', 'OCI (OKE)', 'AWS', 'Docker', 'Kubernetes'],
+        },
+        {
+          category: 'IaC & DevOps',
+          colorClass: 'text-violet',
+          items: ['Terraform', 'ArgoCD', 'Helm', 'GitHub Actions', 'OpenTelemetry'],
+        },
+        {
+          category: 'Integrations & Protocols',
+          terminalLabel: 'Integrations',
+          colorClass: 'text-amberSoft',
+          items: [
+            'Keycloak',
+            'Orthanc PACS',
+            'HL7 / DICOM',
+            'GCP Pub/Sub',
+            'Paymob',
+            'Kashier',
+            'PayTabs',
+            'Gotenberg',
+          ],
+        },
+        {
+          category: 'AI-Assisted Development',
+          terminalLabel: 'AI-Assisted Dev',
+          colorClass: 'text-accent',
+          fullWidth: true,
+          items: ['Claude Code', 'Antigravity CLI', 'Gemini'],
+        },
+      ];
 
-      init() {
-        this.printWelcome();
-        this.input.addEventListener('keypress', (e) => {
-          if (e.key === 'Enter') {
-            this.handleCommand();
+      const AVAILABLE_COMMANDS = [
+        'whoami',
+        'about',
+        'projects',
+        'stack',
+        'skills',
+        'contact',
+        'theme',
+        'help',
+        'clear',
+        'ls',
+        'cat',
+        'pwd',
+        'uname',
+        'sudo',
+      ];
+
+      const ACCENT_THEMES = [
+        { id: 'blue', label: 'Blue', rgb: '88 166 255', hex: '#58A6FF' },
+        { id: 'emerald', label: 'Emerald', rgb: '52 211 153', hex: '#34D399' },
+        { id: 'violet', label: 'Violet', rgb: '192 132 252', hex: '#C084FC' },
+        { id: 'amber', label: 'Amber', rgb: '245 158 11', hex: '#F59E0B' },
+        { id: 'rose', label: 'Rose', rgb: '251 113 133', hex: '#FB7185' },
+      ];
+
+      // --- DOM References ---
+      const viewTerminalShell = document.getElementById('view-terminal-shell');
+      const viewWebsite = document.getElementById('view-website');
+
+      const terminalScroll = document.getElementById('terminal-scroll');
+      const terminalOutput = document.getElementById('terminal-output');
+      const terminalInput = document.getElementById('terminal-input');
+      const ghostText = document.getElementById('ghost-text');
+
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toast-message');
+
+      // --- Runtime State ---
+      const commandHistory = [];
+      let historyIndex = -1;
+      let typingTimer = null;
+      let toastTimer = null;
+      let currentThemeId = 'blue';
+
+      // --- Utility: Escape HTML to prevent injection from raw user input ---
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      // --- Utility: Show sleek toast notification ---
+      function showToast(message) {
+        toastMessage.textContent = message;
+        toast.classList.remove('opacity-0', 'translate-y-3');
+        toast.classList.add('opacity-100', 'translate-y-0');
+
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toast.classList.remove('opacity-100', 'translate-y-0');
+          toast.classList.add('opacity-0', 'translate-y-3');
+        }, 2400);
+      }
+
+      // --- Utility: Clipboard copy (modern Clipboard API with legacy fallback) ---
+      async function copyToClipboard(text, label) {
+        if (navigator.clipboard && window.isSecureContext) {
+          try {
+            await navigator.clipboard.writeText(text);
+            showToast(label || `Copied ${text}`);
+            return;
+          } catch (_) {
+            // Fall through to execCommand fallback
           }
-        });
-      },
-
-      printWelcome() {
-        const welcome = `Welcome to my terminal portfolio!
-Type 'help' to see available commands 
-`;
-        this.output.textContent += welcome;
-      },
-
-      handleCommand() {
-        const cmd = this.input.value.trim().toLowerCase();
-        const cmdParts = cmd.split(' ');
-
-        this.output.textContent += `$ ${this.input.value}\n`;
-
-        if (cmdParts[0] === 'sudo') {
-          this.output.insertAdjacentHTML('beforeend', this.commands.sudo + '\n\n');
-        } else if (cmd === 'clear') {
-          this.output.textContent = '';
-        }  else if (this.commands[cmd]) {
-          this.output.textContent += this.commands[cmd] + '\n\n';
-        } else if (cmd !== '') {
-          this.output.textContent += `Command not found: ${cmd}\nType 'help' for available commands\n\n`;
         }
 
-        this.input.value = '';
-        this.output.scrollTop = this.output.scrollHeight;
-      }
-  
-    };
+        try {
+          const textarea = document.createElement('textarea');
+          textarea.value = text;
+          textarea.setAttribute('readonly', '');
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.select();
+          const ok = document.execCommand('copy');
+          document.body.removeChild(textarea);
 
-    terminal.init();
+          showToast(ok ? (label || `Copied ${text}`) : 'Unable to copy automatically');
+        } catch (_) {
+          showToast('Unable to copy automatically');
+        }
+      }
+
+      // --- Utility: Smooth scroll to bottom of terminal ---
+      function scrollToBottom() {
+        requestAnimationFrame(() => {
+          terminalScroll.scrollTop = terminalScroll.scrollHeight;
+        });
+      }
+
+      // --- Floating Accent Dock & CSS Variable Controller ---
+      const accentDock = document.getElementById('accent-dock');
+      const accentDockTray = document.getElementById('accent-dock-tray');
+      const accentDockTrigger = document.getElementById('accent-dock-trigger');
+
+      function renderAccentDock() {
+        accentDockTray.innerHTML = ACCENT_THEMES.map((theme) => {
+          const isActive = theme.id === currentThemeId;
+          return `
+            <button
+              type="button"
+              role="radio"
+              aria-checked="${isActive}"
+              aria-label="${theme.label} accent"
+              title="${theme.label}"
+              data-set-theme="${theme.id}"
+              class="w-4 h-4 rounded-full shrink-0 transition-transform duration-150 hover:scale-125 cursor-pointer ${
+                isActive ? 'ring-2 ring-white/85 ring-offset-2 ring-offset-surfaceElevated scale-110' : 'opacity-80 hover:opacity-100'
+              }"
+              style="background-color: ${theme.hex}"
+            ></button>
+          `;
+        }).join('');
+      }
+
+      function setDockOpen(open) {
+        accentDock.classList.toggle('is-open', open);
+        accentDockTrigger.setAttribute('aria-expanded', String(open));
+      }
+
+      function setAccentTheme(themeId, announce = false) {
+        const target = ACCENT_THEMES.find((t) => t.id === themeId);
+        if (!target) return false;
+
+        currentThemeId = target.id;
+        document.documentElement.style.setProperty('--color-accent', target.rgb);
+        try {
+          localStorage.setItem('sarhan_accent_theme', target.id);
+        } catch (_) {}
+
+        renderAccentDock();
+        if (announce) {
+          showToast(`Accent color: ${target.label}`);
+        }
+        return true;
+      }
+
+      // --- Render Full-Page Responsive Website View from Single Data Source ---
+      function renderWebsiteView() {
+        const principlesHtml = PRINCIPLES.map(
+          (p) => `
+            <div class="p-5 rounded-xl bg-surfaceElevated/55 border border-white/[0.07] hover:border-white/[0.14] transition-colors space-y-2">
+              <div class="${p.colorClass} font-mono font-medium text-xs">${escapeHtml(p.num)} · ${escapeHtml(p.title)}</div>
+              <p class="text-sm text-muted leading-relaxed">${escapeHtml(p.description)}</p>
+            </div>
+          `
+        ).join('');
+
+        const projectsHtml = PROJECTS.map((project) => {
+          const title = escapeHtml(project.readerName || project.name);
+          const linkHtml = project.url
+            ? `<a href="${escapeHtml(project.url)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs font-mono text-accent hover:underline">${escapeHtml(project.urlLabel)} ↗</a>`
+            : '';
+          const tagsHtml = project.tags
+            .map(
+              (tag) =>
+                `<span class="px-2.5 py-1 rounded-md bg-white/[0.04] border border-white/[0.06] ${tag.colorClass}">${escapeHtml(tag.label)}</span>`
+            )
+            .join('');
+
+          return `
+            <article class="p-4 sm:p-6 rounded-2xl bg-surface/90 border border-white/[0.08] hover:border-accent/35 transition-all duration-200 flex flex-col justify-between gap-4 sm:gap-5">
+              <div class="space-y-2.5 sm:space-y-3">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <h3 class="text-base sm:text-lg font-semibold text-ink tracking-tight">${title}</h3>
+                  <span class="text-[11px] font-mono px-2.5 py-0.5 rounded-full shrink-0 ${project.badgeClasses}">${escapeHtml(project.category)}</span>
+                </div>
+                ${linkHtml}
+                <p class="text-[13.5px] sm:text-[15px] text-muted leading-relaxed">
+                  ${escapeHtml(project.description)}
+                </p>
+              </div>
+              <div class="flex flex-wrap gap-1.5 font-mono text-[11px]">
+                ${tagsHtml}
+              </div>
+            </article>
+          `;
+        }).join('');
+
+        const stackHtml = STACK.map((group) => {
+          const pillsHtml = group.items
+            .map(
+              (item) =>
+                `<span class="px-2.5 py-1 rounded-md bg-white/[0.04] border border-white/[0.07] text-ink/90 text-xs sm:text-[13px] font-mono">${escapeHtml(item)}</span>`
+            )
+            .join('');
+
+          return `
+            <div class="p-5 sm:p-6 rounded-2xl bg-surface/80 border border-white/[0.07] space-y-3.5 ${group.fullWidth ? 'sm:col-span-2' : ''}">
+              <div class="text-xs font-mono uppercase tracking-wider ${group.colorClass}">${escapeHtml(group.category)}</div>
+              <div class="flex flex-wrap gap-2">
+                ${pillsHtml}
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        viewWebsite.innerHTML = `
+          <!-- Sticky Full-Width Website Navigation Bar -->
+          <header class="sticky top-0 z-30 w-full bg-canvas/85 backdrop-blur-md border-b border-white/[0.07]">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-3">
+              <a href="#top" class="flex items-center gap-2 font-mono text-sm font-medium text-ink hover:text-accent transition-colors truncate">
+                <span class="w-2 h-2 rounded-full bg-accent shrink-0 transition-colors duration-300"></span>
+                <span>/bin/sarhan</span>
+              </a>
+
+              <nav aria-label="Primary" class="hidden md:flex items-center gap-6 text-sm text-muted">
+                <a href="#about" class="hover:text-ink transition-colors">Philosophy</a>
+                <a href="#projects" class="hover:text-ink transition-colors">Projects</a>
+                <a href="#stack" class="hover:text-ink transition-colors">Stack</a>
+                <a href="#contact" class="hover:text-ink transition-colors">Contact</a>
+              </nav>
+
+              <div
+                role="tablist"
+                aria-label="View mode"
+                class="inline-flex items-center p-0.5 rounded-lg bg-surfaceElevated border border-white/[0.08] text-[11px] sm:text-xs font-sans font-medium shrink-0"
+              >
+                <button
+                  type="button"
+                  role="tab"
+                  data-set-mode="website"
+                  aria-selected="true"
+                  class="mode-btn-website px-2.5 sm:px-3 py-1 rounded-md transition-all duration-200 bg-white/[0.1] text-ink shadow-sm cursor-pointer"
+                >
+                  Website
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  data-set-mode="terminal"
+                  aria-selected="false"
+                  class="mode-btn-terminal px-2.5 sm:px-3 py-1 rounded-md transition-all duration-200 text-muted hover:text-ink cursor-pointer"
+                >
+                  Terminal
+                </button>
+              </div>
+            </div>
+          </header>
+
+          <!-- Full-Width Website Main Content -->
+          <main id="top" class="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 lg:py-20 space-y-12 sm:space-y-24">
+            <!-- Hero Section -->
+            <section class="space-y-5 sm:space-y-6">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent text-[11px] sm:text-xs font-mono transition-colors duration-300">
+                <span class="relative flex h-2 w-2 shrink-0">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-60"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
+                </span>
+                <span>${escapeHtml(PROFILE.locationLine)}</span>
+              </div>
+
+              <div class="space-y-2 sm:space-y-3">
+                <h1 class="text-3xl sm:text-5xl font-bold tracking-tight text-ink">
+                  ${escapeHtml(PROFILE.name)}
+                </h1>
+                <p class="text-[15px] sm:text-xl leading-snug text-accent font-medium">
+                  ${escapeHtml(PROFILE.role)}
+                </p>
+              </div>
+
+              <p class="text-[14.5px] sm:text-lg leading-relaxed text-muted max-w-3xl">
+                ${escapeHtml(PROFILE.summary)}
+              </p>
+
+              <!-- Primary Action Buttons -->
+              <div class="flex flex-wrap items-center gap-2.5 sm:gap-3 pt-1 sm:pt-2">
+                <button
+                  type="button"
+                  data-copy-email="true"
+                  class="inline-flex items-center gap-2 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-lg bg-accent text-canvas font-semibold text-[13px] sm:text-sm hover:bg-accent/90 transition-colors cursor-pointer"
+                >
+                  <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                  Copy Email
+                </button>
+                <a
+                  href="${escapeHtml(PROFILE.githubUrl)}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.08] text-ink font-medium text-[13px] sm:text-sm transition-colors"
+                >
+                  <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                  GitHub
+                </a>
+                <a
+                  href="${escapeHtml(PROFILE.linkedinUrl)}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.08] text-ink font-medium text-[13px] sm:text-sm transition-colors"
+                >
+                  LinkedIn ↗
+                </a>
+                <a
+                  href="${escapeHtml(PROFILE.xUrl)}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.08] text-ink font-medium text-[13px] sm:text-sm transition-colors"
+                >
+                  X ↗
+                </a>
+              </div>
+            </section>
+
+            <!-- Engineering Philosophy -->
+            <section id="about" class="scroll-mt-24 space-y-5 sm:space-y-6">
+              <div class="space-y-2">
+                <h2 class="text-[11px] sm:text-xs font-mono uppercase tracking-widest text-muted">Engineering Philosophy</h2>
+                <p class="text-[14.5px] sm:text-lg leading-relaxed text-ink/90 max-w-3xl">
+                  I design around <span class="text-accent font-medium">strict tenant isolation</span>, <span class="text-sage font-medium">idempotent pipelines</span>, and <span class="text-violet font-medium">declarative infrastructure</span>. Good architecture means predictable load behavior, boring deployments, and sensible cloud spend.
+                </p>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
+                ${principlesHtml}
+              </div>
+            </section>
+
+            <!-- Selected Projects -->
+            <section id="projects" class="scroll-mt-24 space-y-5 sm:space-y-6">
+              <div class="flex items-center justify-between gap-2">
+                <h2 class="text-[11px] sm:text-xs font-mono uppercase tracking-widest text-muted">Selected Projects</h2>
+                <span class="text-xs font-mono text-muted/70">~/projects</span>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+                ${projectsHtml}
+              </div>
+            </section>
+
+            <!-- Technical Stack -->
+            <section id="stack" class="scroll-mt-24 space-y-5 sm:space-y-6">
+              <div class="flex items-center justify-between gap-2">
+                <h2 class="text-[11px] sm:text-xs font-mono uppercase tracking-widest text-muted">Technical Stack</h2>
+                <span class="text-xs font-mono text-muted/70">stack.yaml</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                ${stackHtml}
+              </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section id="contact" class="scroll-mt-24 space-y-6">
+              <div class="flex items-center justify-between gap-2">
+                <h2 class="text-xs font-mono uppercase tracking-widest text-muted">Contact</h2>
+                <span class="text-xs font-mono text-muted/70">contact.sh</span>
+              </div>
+              <div class="p-6 sm:p-9 rounded-2xl bg-surface/90 border border-white/[0.08] space-y-6">
+                <div class="space-y-2.5 max-w-2xl">
+                  <h3 class="text-xl sm:text-2xl font-semibold tracking-tight text-ink">
+                    Have a system to scale, migrate, or untangle?
+                  </h3>
+                  <p class="text-sm sm:text-[15px] text-muted leading-relaxed">
+                    Whether you're hiring for a senior backend or platform role, moving workloads across clouds, or architecting a multi-tenant product from scratch — drop me a line.
+                  </p>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-3">
+                  <a
+                    href="mailto:${escapeHtml(PROFILE.email)}"
+                    class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-accent text-canvas font-semibold text-sm hover:bg-accent/90 transition-colors"
+                  >
+                    Email me ↗
+                  </a>
+                  <button
+                    type="button"
+                    data-copy-email="true"
+                    class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white/[0.04] hover:bg-accent/15 border border-white/[0.08] hover:border-accent/30 text-ink/90 hover:text-accent font-mono text-xs sm:text-sm transition-colors cursor-pointer"
+                  >
+                    <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    ${escapeHtml(PROFILE.email)}
+                  </button>
+                </div>
+
+                <div class="pt-4 border-t border-white/[0.07] flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-mono text-muted">
+                  <a href="${escapeHtml(PROFILE.githubUrl)}" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">GitHub ↗</a>
+                  <a href="${escapeHtml(PROFILE.linkedinUrl)}" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">LinkedIn ↗</a>
+                  <a href="${escapeHtml(PROFILE.xUrl)}" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">X ↗</a>
+                </div>
+              </div>
+            </section>
+          </main>
+
+          <!-- Full-Width Footer (extra mobile bottom padding clears floating accent pill) -->
+          <footer class="w-full border-t border-white/[0.07] mt-auto">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-20 sm:py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-muted">
+              <span class="font-mono">/bin/sarhan · Built for clarity &amp; speed</span>
+              <button
+                type="button"
+                data-set-mode="terminal"
+                class="font-mono text-accent hover:underline cursor-pointer"
+              >
+                Open interactive terminal →
+              </button>
+            </div>
+          </footer>
+        `;
+      }
+
+      // --- Template Builders for CLI Command Outputs ---
+
+      function renderWhoami() {
+        return `
+          <div class="space-y-4">
+            <!-- Header & Live Availability Indicator -->
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-white/[0.07]">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-base sm:text-lg font-semibold text-ink tracking-tight">${escapeHtml(PROFILE.name)}</span>
+                <span class="text-[11px] sm:text-xs px-2 py-0.5 rounded bg-accent/10 text-accent border border-accent/20">${escapeHtml(PROFILE.badge)}</span>
+              </div>
+              <div class="inline-flex items-center gap-2 text-xs text-accent transition-colors duration-300">
+                <span class="relative flex h-2 w-2 shrink-0">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-60"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
+                </span>
+                <span>${escapeHtml(PROFILE.availability)}</span>
+              </div>
+            </div>
+
+            <!-- Aligned Key-Value Metadata Block -->
+            <div class="grid grid-cols-1 sm:grid-cols-[96px_1fr] gap-y-2 sm:gap-y-1.5 gap-x-4 text-[13px] sm:text-[13.5px]">
+              <div class="text-muted text-xs sm:text-[13.5px]">role</div>
+              <div class="text-ink break-words">${escapeHtml(PROFILE.role)}</div>
+
+              <div class="text-muted text-xs sm:text-[13.5px]">focus</div>
+              <div class="text-ink/90 break-words">Multi-tenant SaaS, Kubernetes (<span class="text-accent">GKE</span>/<span class="text-accent">OKE</span>), Cloud Infrastructure (<span class="text-violet">GCP</span>/<span class="text-violet">OCI</span>/<span class="text-violet">AWS</span>) &amp; Medical Imaging Systems</div>
+
+              <div class="text-muted text-xs sm:text-[13.5px]">location</div>
+              <div class="text-ink/90 break-words">${escapeHtml(PROFILE.locationLine)}</div>
+
+              <div class="text-muted text-xs sm:text-[13.5px]">github</div>
+              <div class="break-all">
+                <a href="${escapeHtml(PROFILE.githubUrl)}" target="_blank" rel="noopener noreferrer" class="text-accent hover:underline">${escapeHtml(PROFILE.githubHandle)} ↗</a>
+              </div>
+            </div>
+
+            <!-- Inline Clickable Intro Hint -->
+            <div class="pt-1 text-xs text-muted flex flex-wrap items-center gap-x-2 gap-y-1.5">
+              <span>Explore:</span>
+              <button type="button" data-cmd="about" class="text-violet hover:text-accent underline decoration-white/15 underline-offset-4 cursor-pointer">about</button>
+              <span class="text-white/15">·</span>
+              <button type="button" data-cmd="projects" class="text-violet hover:text-accent underline decoration-white/15 underline-offset-4 cursor-pointer">projects</button>
+              <span class="text-white/15">·</span>
+              <button type="button" data-cmd="stack" class="text-violet hover:text-accent underline decoration-white/15 underline-offset-4 cursor-pointer">stack</button>
+              <span class="text-white/15">·</span>
+              <button type="button" data-cmd="contact" class="text-violet hover:text-accent underline decoration-white/15 underline-offset-4 cursor-pointer">contact</button>
+              <span class="text-white/15">·</span>
+              <button type="button" data-cmd="help" class="text-muted hover:text-ink underline decoration-white/15 underline-offset-4 cursor-pointer">help</button>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderAbout() {
+        const cardsHtml = PRINCIPLES.map(
+          (p) => `
+            <div class="p-3 rounded-lg bg-white/[0.025] border border-white/[0.06]">
+              <div class="${p.colorClass} font-medium text-xs mb-1">${escapeHtml(p.num)} · ${escapeHtml(p.title)}</div>
+              <div class="text-muted text-xs leading-relaxed">${escapeHtml(p.description)}</div>
+            </div>
+          `
+        ).join('');
+
+        return `
+          <div class="space-y-3 text-[13px] sm:text-[13.5px]">
+            <div class="text-muted text-xs uppercase tracking-wider"># engineering philosophy</div>
+            <p class="text-ink/90 max-w-[74ch]">
+              ${escapeHtml(PROFILE.aboutIntro)}
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+              ${cardsHtml}
+            </div>
+          </div>
+        `;
+      }
+
+      function renderProjects() {
+        const itemsHtml = PROJECTS.map((project, idx) => {
+          const branch = idx === PROJECTS.length - 1 ? '└──' : '├──';
+          const linkHtml = project.url
+            ? `<a href="${escapeHtml(project.url)}" target="_blank" rel="noopener noreferrer" class="text-xs text-accent hover:underline break-all">${escapeHtml(project.urlLabel)} ↗</a>`
+            : '';
+
+          return `
+            <div class="pl-3.5 sm:pl-4 relative">
+              <span class="absolute -left-[5px] top-2 w-2 h-2 rounded-full ${project.dotClass}"></span>
+              <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                <span class="text-ink font-semibold">${branch} ${escapeHtml(project.name)}</span>
+                ${linkHtml}
+                <span class="text-xs text-muted">— ${escapeHtml(project.shortSummary)}</span>
+              </div>
+              <div class="text-xs text-muted mt-1 sm:pl-4 break-words">
+                <span class="${project.detailLabelClass}">${escapeHtml(project.detailLabel)}:</span> ${escapeHtml(project.detailText)}
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        return `
+          <div class="space-y-3 text-[13px] sm:text-[13.5px]">
+            <div class="text-accent font-medium">~/projects</div>
+            <div class="space-y-4 pl-1 border-l border-white/[0.09] ml-1.5">
+              ${itemsHtml}
+            </div>
+          </div>
+        `;
+      }
+
+      function renderStack() {
+        const rowsHtml = STACK.map(
+          (group) => `
+            <div class="${group.colorClass} font-medium text-xs sm:text-[13.5px]">${escapeHtml(group.terminalLabel || group.category)}</div>
+            <div class="text-ink/90 pb-2 sm:pb-0 break-words">${escapeHtml(group.items.join(' · '))}</div>
+          `
+        ).join('');
+
+        return `
+          <div class="space-y-3 text-[13px] sm:text-[13.5px]">
+            <div class="text-muted text-xs uppercase tracking-wider"># technical stack</div>
+            <div class="grid grid-cols-1 sm:grid-cols-[190px_1fr] gap-y-1 sm:gap-y-2.5 gap-x-4 p-3.5 sm:p-4 rounded-lg bg-white/[0.02] border border-white/[0.06]">
+              ${rowsHtml}
+            </div>
+          </div>
+        `;
+      }
+
+      function renderContact() {
+        return `
+          <div class="space-y-3 text-[13px] sm:text-[13.5px]">
+            <div class="text-muted text-xs uppercase tracking-wider"># direct channels</div>
+            <div class="grid grid-cols-1 sm:grid-cols-[110px_1fr] gap-y-1 sm:gap-y-2 gap-x-4 p-3.5 sm:p-4 rounded-lg bg-white/[0.02] border border-white/[0.06]">
+              <div class="text-muted text-xs sm:text-[13.5px]">email</div>
+              <div class="flex flex-wrap items-center gap-2 pb-2 sm:pb-0">
+                <button
+                  type="button"
+                  data-copy-email="true"
+                  class="text-sage hover:underline cursor-pointer text-left break-all"
+                >${escapeHtml(PROFILE.email)}</button>
+                <button
+                  type="button"
+                  data-copy-email="true"
+                  class="text-[11px] px-2 py-0.5 rounded bg-white/[0.05] hover:bg-sage/15 text-muted hover:text-sage border border-white/[0.08] transition-colors cursor-pointer"
+                >copy</button>
+              </div>
+
+              <div class="text-muted text-xs sm:text-[13.5px]">github</div>
+              <div class="pb-2 sm:pb-0 break-all">
+                <a href="${escapeHtml(PROFILE.githubUrl)}" target="_blank" rel="noopener noreferrer" class="text-accent hover:underline">${escapeHtml(PROFILE.githubHandle)} ↗</a>
+              </div>
+
+              <div class="text-muted text-xs sm:text-[13.5px]">linkedin</div>
+              <div class="pb-2 sm:pb-0 break-all">
+                <a href="${escapeHtml(PROFILE.linkedinUrl)}" target="_blank" rel="noopener noreferrer" class="text-accent hover:underline">${escapeHtml(PROFILE.linkedinHandle)} ↗</a>
+              </div>
+
+              <div class="text-muted text-xs sm:text-[13.5px]">x / twitter</div>
+              <div class="break-all">
+                <a href="${escapeHtml(PROFILE.xUrl)}" target="_blank" rel="noopener noreferrer" class="text-accent hover:underline">${escapeHtml(PROFILE.xHandle)} ↗</a>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderThemeList() {
+        const swatchesHtml = ACCENT_THEMES.map((theme) => {
+          const isActive = theme.id === currentThemeId;
+          return `
+            <button
+              type="button"
+              data-cmd="theme ${theme.id}"
+              class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs transition-colors cursor-pointer ${
+                isActive
+                  ? 'bg-white/[0.09] border-accent/40 text-ink font-medium'
+                  : 'bg-white/[0.03] hover:bg-white/[0.07] border-white/[0.08] text-muted hover:text-ink'
+              }"
+            >
+              <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: ${theme.hex}"></span>
+              <span>${theme.id}</span>
+              ${isActive ? '<span class="text-accent">*</span>' : ''}
+            </button>
+          `;
+        }).join('');
+
+        return `
+          <div class="space-y-2.5 text-[13px] sm:text-[13.5px]">
+            <div class="text-muted text-xs uppercase tracking-wider"># accent color themes (click or run: theme &lt;name&gt;)</div>
+            <div class="flex flex-wrap gap-2">${swatchesHtml}</div>
+          </div>
+        `;
+      }
+
+      function renderHelp() {
+        const rows = [
+          ['whoami', 'Display profile summary & availability'],
+          ['about', 'Engineering philosophy & architectural principles'],
+          ['projects', 'Explore selected systems & infrastructure work'],
+          ['stack', 'Categorized backend, cloud & DevOps technologies (alias: skills)'],
+          ['contact', 'Email (one-click copy), GitHub, LinkedIn & X'],
+          ['theme', 'Switch main accent color (e.g. theme emerald)'],
+          ['clear', 'Clear terminal output (or press Ctrl+L)'],
+        ];
+
+        const itemsHtml = rows
+          .map(
+            ([cmd, desc]) => `
+            <div class="flex flex-col sm:flex-row sm:items-baseline gap-0.5 sm:gap-4">
+              <button type="button" data-cmd="${cmd}" class="w-24 text-left text-violet hover:text-accent font-medium cursor-pointer">${cmd}</button>
+              <span class="text-muted text-xs sm:text-[13px]">${desc}</span>
+            </div>
+          `
+          )
+          .join('');
+
+        return `
+          <div class="space-y-2.5 text-[13px] sm:text-[13.5px]">
+            <div class="text-muted text-xs uppercase tracking-wider"># available commands (tap or click to run)</div>
+            <div class="space-y-2 sm:space-y-1.5 pl-1">${itemsHtml}</div>
+            <div class="text-xs text-muted/70 pt-1">
+              Tip: Try <span class="text-ink/80">ls</span>, <span class="text-ink/80">cat about.md</span>, <span class="text-ink/80">theme emerald</span>, or switch to <button type="button" data-set-mode="website" class="text-accent hover:underline cursor-pointer">Website</button> mode.
+            </div>
+          </div>
+        `;
+      }
+
+      // --- Append a Command + Output Entry to the Terminal ---
+      function appendBlock(commandLabel, htmlContent, showPromptHeader = true) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'space-y-2.5';
+
+        if (showPromptHeader) {
+          const cmdHeader = document.createElement('div');
+          cmdHeader.className = 'flex items-center gap-2 text-[13px] sm:text-[13.5px]';
+          cmdHeader.innerHTML = `
+            <span class="shrink-0 select-none">
+              <span class="hidden sm:inline text-sage font-medium">sarhan@cloud</span><span class="hidden sm:inline text-muted">:</span><span class="text-accent font-medium">~</span><span class="text-muted ml-0.5">$</span>
+            </span>
+            <span class="text-ink font-medium break-all">${escapeHtml(commandLabel)}</span>
+          `;
+          wrapper.appendChild(cmdHeader);
+        }
+
+        const body = document.createElement('div');
+        body.innerHTML = htmlContent;
+        wrapper.appendChild(body);
+
+        terminalOutput.appendChild(wrapper);
+        scrollToBottom();
+      }
+
+      // --- Execute a CLI Command ---
+      function executeCommand(rawInput) {
+        const trimmed = rawInput.trim();
+        if (!trimmed) {
+          appendBlock('', '', true);
+          return;
+        }
+
+        if (commandHistory[commandHistory.length - 1] !== trimmed) {
+          commandHistory.push(trimmed);
+        }
+        historyIndex = commandHistory.length;
+
+        const parts = trimmed.split(/\s+/);
+        const cmd = parts[0].toLowerCase();
+        const argStr = parts.slice(1).join(' ');
+        const firstArg = (parts[1] || '').toLowerCase();
+
+        switch (cmd) {
+          case 'whoami':
+            appendBlock(trimmed, renderWhoami());
+            break;
+          case 'about':
+            appendBlock(trimmed, renderAbout());
+            break;
+          case 'projects':
+            appendBlock(trimmed, renderProjects());
+            break;
+          case 'stack':
+          case 'skills':
+            appendBlock(trimmed, renderStack());
+            break;
+          case 'contact':
+          case './contact.sh':
+            appendBlock(trimmed, renderContact());
+            break;
+          case 'theme':
+            if (!firstArg || firstArg === 'list') {
+              appendBlock(trimmed, renderThemeList());
+            } else if (setAccentTheme(firstArg, true)) {
+              const active = ACCENT_THEMES.find((t) => t.id === firstArg);
+              appendBlock(
+                trimmed,
+                `<div class="text-[13px] sm:text-[13.5px] text-muted flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full inline-block shrink-0" style="background-color: ${active.hex}"></span>
+                  <span>Accent theme switched to <span class="text-accent font-medium">${escapeHtml(active.label)}</span>.</span>
+                </div>`
+              );
+            } else {
+              appendBlock(
+                trimmed,
+                `<div class="space-y-2 text-[13px] sm:text-[13.5px]">
+                  <div class="text-muted">Unknown theme: <span class="text-ink">${escapeHtml(parts[1])}</span></div>
+                  ${renderThemeList()}
+                </div>`
+              );
+            }
+            break;
+          case 'help':
+            appendBlock(trimmed, renderHelp());
+            break;
+          case 'clear':
+            terminalOutput.innerHTML = '';
+            appendBlock(
+              '',
+              `<div class="text-xs text-muted flex flex-wrap items-center gap-2">
+                <span>Terminal cleared.</span>
+                <button type="button" data-cmd="whoami" class="text-violet hover:text-accent underline decoration-white/15 underline-offset-4 cursor-pointer">whoami</button>
+                <span class="text-white/15">·</span>
+                <button type="button" data-cmd="projects" class="text-violet hover:text-accent underline decoration-white/15 underline-offset-4 cursor-pointer">projects</button>
+                <span class="text-white/15">·</span>
+                <button type="button" data-cmd="help" class="text-muted hover:text-ink underline decoration-white/15 underline-offset-4 cursor-pointer">help</button>
+              </div>`,
+              false
+            );
+            break;
+
+          case 'ls':
+            if (firstArg === 'projects' || firstArg === 'projects/') {
+              appendBlock(trimmed, renderProjects());
+            } else {
+              appendBlock(
+                trimmed,
+                `<div class="flex flex-wrap gap-x-5 gap-y-1.5 text-[13px] sm:text-[13.5px]">
+                  <button type="button" data-cmd="projects" class="text-accent font-medium hover:underline cursor-pointer">projects/</button>
+                  <button type="button" data-cmd="stack" class="text-accent font-medium hover:underline cursor-pointer">infrastructure/</button>
+                  <button type="button" data-cmd="cat about.md" class="text-ink hover:text-accent cursor-pointer">about.md</button>
+                  <button type="button" data-cmd="cat stack.yaml" class="text-ink hover:text-accent cursor-pointer">stack.yaml</button>
+                  <button type="button" data-cmd="cat contact.sh" class="text-sage hover:underline cursor-pointer">contact.sh*</button>
+                </div>`
+              );
+            }
+            break;
+          case 'cat':
+            if (!firstArg) {
+              appendBlock(trimmed, `<div class="text-[13px] sm:text-[13.5px] text-muted">usage: cat &lt;about.md | stack.yaml | contact.sh&gt;</div>`);
+            } else if (firstArg === 'about.md') {
+              appendBlock(trimmed, renderAbout());
+            } else if (firstArg === 'stack.yaml') {
+              appendBlock(trimmed, renderStack());
+            } else if (firstArg === 'contact.sh' || firstArg === 'contact.sh*') {
+              appendBlock(trimmed, renderContact());
+            } else if (firstArg === 'projects' || firstArg === 'projects/') {
+              appendBlock(trimmed, `<div class="text-[13px] sm:text-[13.5px] text-muted">cat: projects: Is a directory. Try <button type="button" data-cmd="projects" class="text-violet hover:text-accent underline decoration-white/15 underline-offset-4 cursor-pointer">projects</button>.</div>`);
+            } else {
+              appendBlock(trimmed, `<div class="text-[13px] sm:text-[13.5px] text-muted">cat: ${escapeHtml(parts[1])}: No such file or directory</div>`);
+            }
+            break;
+          case 'cd':
+            if (firstArg === 'projects' || firstArg === 'projects/') {
+              appendBlock(trimmed, renderProjects());
+            } else if (!firstArg || firstArg === '~' || firstArg === '/home/sarhan') {
+              appendBlock(trimmed, `<div class="text-ink/90 text-[13px]">/home/sarhan</div>`);
+            } else {
+              appendBlock(trimmed, `<div class="text-[13px] sm:text-[13.5px] text-muted">cd: no such file or directory: ${escapeHtml(parts[1])}</div>`);
+            }
+            break;
+          case 'pwd':
+            appendBlock(trimmed, `<div class="text-ink/90">/home/sarhan</div>`);
+            break;
+          case 'uname':
+            appendBlock(
+              trimmed,
+              `<div class="text-ink/90 text-[13px] break-words">Linux sarhan-cloud 6.8.0-gke #1 SMP PREEMPT_DYNAMIC x86_64 GNU/Linux${argStr ? '' : ' <span class="text-muted">(try uname -a)</span>'}</div>`
+            );
+            break;
+          case 'sudo':
+            appendBlock(
+              trimmed,
+              `<div class="text-amberSoft text-[13px]">sarhan is not in the sudoers file. This incident will be logged to OpenTelemetry.</div>`
+            );
+            break;
+          default:
+            appendBlock(
+              trimmed,
+              `<div class="text-[13px] sm:text-[13.5px] text-muted">
+                zsh: command not found: <span class="text-ink">${escapeHtml(cmd)}</span>. Type <button type="button" data-cmd="help" class="text-violet hover:text-accent underline decoration-white/15 underline-offset-4 cursor-pointer">help</button> to see available commands.
+              </div>`
+            );
+            break;
+        }
+      }
+
+      // --- Ghost Autocomplete Calculation ---
+      function updateGhostText() {
+        const val = terminalInput.value;
+        if (!val || val.includes(' ')) {
+          ghostText.textContent = '';
+          return;
+        }
+        const match = AVAILABLE_COMMANDS.find((c) => c.startsWith(val.toLowerCase()));
+        if (match && match !== val.toLowerCase()) {
+          ghostText.innerHTML = `<span class="opacity-0">${escapeHtml(val)}</span><span>${escapeHtml(match.slice(val.length))}</span>`;
+        } else {
+          ghostText.textContent = '';
+        }
+      }
+
+      // --- Auto-type & Execute when clicking a Command Chip ---
+      function runCommandAnimated(cmd) {
+        if (typingTimer) {
+          clearInterval(typingTimer);
+          typingTimer = null;
+        }
+
+        if (viewTerminalShell.classList.contains('hidden')) {
+          setViewMode('terminal');
+        }
+
+        terminalInput.value = '';
+        ghostText.textContent = '';
+
+        // Avoid forcing soft keyboard open on touch devices when tapping quick chips
+        if (window.matchMedia('(pointer: fine)').matches) {
+          terminalInput.focus();
+        }
+
+        let idx = 0;
+        typingTimer = setInterval(() => {
+          terminalInput.value += cmd[idx];
+          idx += 1;
+          updateGhostText();
+          if (idx >= cmd.length) {
+            clearInterval(typingTimer);
+            typingTimer = null;
+            setTimeout(() => {
+              const finalCmd = terminalInput.value;
+              terminalInput.value = '';
+              ghostText.textContent = '';
+              executeCommand(finalCmd);
+            }, 90);
+          }
+        }, 26);
+      }
+
+      // --- View Mode Switcher (Website <-> Full-Viewport Terminal) ---
+      function setViewMode(mode) {
+        const isTerminal = mode === 'terminal';
+
+        setDockOpen(false);
+        viewTerminalShell.classList.toggle('hidden', !isTerminal);
+        viewWebsite.classList.toggle('hidden', isTerminal);
+
+        // Position accent dock cleanly above Terminal's pinned bottom command bar
+        accentDock.classList.toggle('bottom-[68px]', isTerminal);
+        accentDock.classList.toggle('sm:bottom-[72px]', isTerminal);
+        accentDock.classList.toggle('bottom-5', !isTerminal);
+        accentDock.classList.toggle('sm:bottom-6', !isTerminal);
+
+        // Lock body overflow only in Terminal mode so Website mode scrolls naturally
+        document.body.classList.toggle('overflow-hidden', isTerminal);
+
+        document.querySelectorAll('.mode-btn-terminal').forEach((btn) => {
+          btn.setAttribute('aria-selected', String(isTerminal));
+          btn.classList.toggle('bg-white/[0.1]', isTerminal);
+          btn.classList.toggle('text-ink', isTerminal);
+          btn.classList.toggle('shadow-sm', isTerminal);
+          btn.classList.toggle('text-muted', !isTerminal);
+        });
+
+        document.querySelectorAll('.mode-btn-website').forEach((btn) => {
+          btn.setAttribute('aria-selected', String(!isTerminal));
+          btn.classList.toggle('bg-white/[0.1]', !isTerminal);
+          btn.classList.toggle('text-ink', !isTerminal);
+          btn.classList.toggle('shadow-sm', !isTerminal);
+          btn.classList.toggle('text-muted', isTerminal);
+        });
+
+        if (isTerminal) {
+          if (window.matchMedia('(pointer: fine)').matches) {
+            terminalInput.focus();
+          }
+          scrollToBottom();
+        } else {
+          window.scrollTo({ top: 0, behavior: 'instant' });
+        }
+      }
+
+      // --- Event Listeners ---
+      // Delegated clicks for floating accent dock, [data-set-mode], [data-cmd], and [data-copy-email]
+      document.addEventListener('click', (e) => {
+        const dockToggle = e.target.closest('[data-dock-toggle]');
+        if (dockToggle) {
+          e.preventDefault();
+          setDockOpen(!accentDock.classList.contains('is-open'));
+          return;
+        }
+
+        const themeChoice = e.target.closest('[data-set-theme]');
+        if (themeChoice) {
+          e.preventDefault();
+          setAccentTheme(themeChoice.getAttribute('data-set-theme'), true);
+          setDockOpen(false);
+          return;
+        }
+
+        if (!e.target.closest('#accent-dock')) {
+          setDockOpen(false);
+        }
+
+        const modeTrigger = e.target.closest('[data-set-mode]');
+        if (modeTrigger) {
+          e.preventDefault();
+          setViewMode(modeTrigger.getAttribute('data-set-mode'));
+          return;
+        }
+
+        const cmdTrigger = e.target.closest('[data-cmd]');
+        if (cmdTrigger) {
+          e.preventDefault();
+          runCommandAnimated(cmdTrigger.getAttribute('data-cmd'));
+          return;
+        }
+
+        const copyTrigger = e.target.closest('[data-copy-email]');
+        if (copyTrigger) {
+          e.preventDefault();
+          copyToClipboard(PROFILE.email, `Copied ${PROFILE.email}`);
+          return;
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          setDockOpen(false);
+        }
+      });
+
+      // Clicking empty area in terminal focuses the input (without breaking text selection)
+      terminalScroll.addEventListener('click', (e) => {
+        if (window.getSelection().toString().length > 0) return;
+        if (e.target.closest('a, button, input')) return;
+        terminalInput.focus();
+      });
+
+      // Input ghost suggestion update
+      terminalInput.addEventListener('input', updateGhostText);
+
+      // Keyboard ergonomics: Enter, Tab, ArrowUp/Down, Ctrl+L
+      terminalInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const val = terminalInput.value;
+          terminalInput.value = '';
+          ghostText.textContent = '';
+          executeCommand(val);
+        } else if (e.key === 'Tab') {
+          e.preventDefault();
+          const val = terminalInput.value.trim().toLowerCase();
+          if (!val) return;
+          const match = AVAILABLE_COMMANDS.find((c) => c.startsWith(val));
+          if (match) {
+            terminalInput.value = match;
+            ghostText.textContent = '';
+          }
+        } else if (e.key === 'ArrowUp') {
+          if (commandHistory.length === 0) return;
+          e.preventDefault();
+          if (historyIndex > 0) historyIndex -= 1;
+          terminalInput.value = commandHistory[historyIndex] || '';
+          updateGhostText();
+        } else if (e.key === 'ArrowDown') {
+          if (commandHistory.length === 0) return;
+          e.preventDefault();
+          if (historyIndex < commandHistory.length - 1) {
+            historyIndex += 1;
+            terminalInput.value = commandHistory[historyIndex];
+          } else {
+            historyIndex = commandHistory.length;
+            terminalInput.value = '';
+          }
+          updateGhostText();
+        } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'l') {
+          e.preventDefault();
+          executeCommand('clear');
+        }
+      });
+
+      // --- Initial Boot Sequence ---
+      function boot() {
+        let initialTheme = 'blue';
+        try {
+          const saved = localStorage.getItem('sarhan_accent_theme');
+          if (saved && ACCENT_THEMES.some((t) => t.id === saved)) {
+            initialTheme = saved;
+          }
+        } catch (_) {}
+
+        renderWebsiteView();
+        setAccentTheme(initialTheme, false);
+        appendBlock('whoami', renderWhoami(), true);
+        setViewMode('website');
+      }
+
+      boot();
+    })();
   </script>
 </body>
-
 </html>
